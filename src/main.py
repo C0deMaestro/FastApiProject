@@ -3,9 +3,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.base_config import auth_backend, fastapi_users
-from src.chats.models import Chat
+#from src.chats.models import Chat
 from src.auth.schemas import UserRead, UserCreate
-from src.database import get_async_session
+from src.chats.router import router as chats_router
 
 app = FastAPI(
     title="Message_App"
@@ -24,12 +24,4 @@ app.include_router(
 )
 
 
-@app.get("/find_users")
-async def find_chats(chat_name:str, session: AsyncSession = Depends(get_async_session)):
-    chat = Chat
-    query = select(chat).where(chat.chat_name == chat_name)
-    print(query)
-    result = await session.execute(query)
-    print(result)
-    return result.all()
-
+app.include_router(chats_router)
