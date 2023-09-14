@@ -1,5 +1,5 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, MetaData
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, MetaData, Identity, Sequence
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -27,12 +27,11 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     chats = relationship("Chat", secondary="user_chat_relations", back_populates="users")
 
 
+
 class Chat(Base):
     __tablename__ = "chat"
-    __tableargs__ ={"metadata":metadata}
     id = Column(Integer, primary_key=True)
     chat_name = Column(String, nullable=False)
-    username = Column(String, nullable=False)
     register_at = Column(TIMESTAMP, default=datetime.utcnow)
 
     #создатель чата
@@ -40,6 +39,8 @@ class Chat(Base):
     user_created = relationship("User",backref="chats_admin")
 
     users = relationship("User", secondary="user_chat_relations", back_populates="chats")
+
+
 
 
 class UserChatRelations(Base):

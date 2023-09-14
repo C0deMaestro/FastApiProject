@@ -6,6 +6,7 @@ from src.auth.base_config import auth_backend, fastapi_users
 #from src.chats.models import Chat
 from src.auth.schemas import UserRead, UserCreate
 from src.chats.router import router as chats_router
+from src.messages.router import router as message_router
 
 app = FastAPI(
     title="Message_App"
@@ -25,3 +26,4 @@ app.include_router(
 
 
 app.include_router(chats_router)
+app.include_router(message_router)
